@@ -13,7 +13,7 @@ const MainLayout = ({ children }: TChildren) => {
     return (
         <LayoutWrapper className="font-mono" >
             <SVGWrapper>
-                <div className="circle">
+                <div className="circle hidden lg:block">
                     <SVG src={spaceship} width="150px" height="150px" />
                 </div>
             </SVGWrapper>

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import nasaImg from '../../assets/nasa.png';
-import background from '../../assets/mounting.jpg'
+import background from '../../assets/mountain.jpg'
 import { ReactSVG } from "react-svg";
 
 interface SVGProps {
