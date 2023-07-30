@@ -4,10 +4,7 @@ import nasa from '../assets/nasa.png';
 import { SVGWrapper } from '../Pages/Search/style';
 import spaceship from '../assets/svgs/spaceship-svgrepo-com.svg';
 import { SVG } from '../Pages/Search/style';
-
-type TChildren = {
-    children: React.ReactNode;
-};
+import { TChildren } from '../types';
 
 const MainLayout = ({ children }: TChildren) => {
     return (

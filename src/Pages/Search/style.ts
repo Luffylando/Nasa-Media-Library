@@ -2,12 +2,7 @@ import styled from 'styled-components';
 import nasaImg from '../../assets/nasa.png';
 import background from '../../assets/mountain.jpg';
 import { ReactSVG } from 'react-svg';
-
-interface SVGProps {
-    color?: string;
-    width?: string;
-    height?: string;
-}
+import { SVGProps } from '../../types';
 
 export const YearPickerStyle = styled.div`
     .react-datepicker-wrapper,

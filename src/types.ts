@@ -48,3 +48,37 @@ export type TSingleSearchResult = {
     };
     version: string;
 };
+
+type THandleSetPage = {
+    currentPage: number;
+    previousPage: number;
+};
+
+export type TPagination = {
+    handlePageChange: (action: string) => void;
+    handleSetPage: ({ currentPage, previousPage }: THandleSetPage) => void;
+    totalData: number;
+    itemsPerPage: number;
+    page: {
+        currentPage: number;
+        previousPage: number;
+    };
+};
+
+export type TSearchPageCard = {
+    nasa_id: string;
+    thumbnail: string;
+    title: string;
+    location: string;
+    photographer: string;
+};
+
+export type TChildren = {
+    children: React.ReactNode;
+};
+
+export type SVGProps = {
+    color?: string;
+    width?: string;
+    height?: string;
+};
