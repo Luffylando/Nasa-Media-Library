@@ -1,11 +1,11 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
-import { useForm } from "react-hook-form";
+import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import debounce from 'lodash.debounce';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { searchSchema } from "./validation";
+import { searchSchema } from './validation';
 import { inputStyle, inputErrorStyle } from '../../tailwindCustomStyles';
 import { TSearchPageForm, TSearchResult } from '../../types';
 import { YearPickerStyle } from './style';
@@ -15,18 +15,18 @@ const Search = () => {
     const [totalData, setTotalData] = useState<number>(0);
     const [yearStart, setYearStart] = useState<Date | undefined>(undefined);
     const [yearEnd, setYearEnd] = useState<Date | undefined>(undefined);
-    const [page, setPage] = useState<{ previousPage: number, currentPage: number }>({
+    const [page, setPage] = useState<{ previousPage: number; currentPage: number }>({
         previousPage: 0,
-        currentPage: 1
+        currentPage: 1,
     });
     const [searchResults, setSearchResults] = useState<TSearchResult>({
         href: '',
         items: [],
         links: [],
         metadata: {
-            total_hits: 0
+            total_hits: 0,
         },
-        version: ''
+        version: '',
     });
 
     const API_URL = import.meta.env.VITE_API_URL;
@@ -39,7 +39,7 @@ const Search = () => {
         formState: { errors },
     } = useForm<TSearchPageForm>({
         resolver: yupResolver(searchSchema),
-    })
+    });
 
     const onSubmit = handleSubmit(async (data) => {
         const phraseQuery = data.phrase ? `?q=${data.phrase}` : '';
@@ -49,16 +49,17 @@ const Search = () => {
         const pageNumber = `&page=1`;
         const PAGE_SIZE = `&page_size=${ITEMS_PER_PAGE}`;
 
-        const results = await axios.get(`${API_URL}/search${phraseQuery}${startYear}${endYear}${mediaType}${PAGE_SIZE}${pageNumber}`);
-        setSearchResults(results.data.collection)
+        const results = await axios.get(
+            `${API_URL}/search${phraseQuery}${startYear}${endYear}${mediaType}${PAGE_SIZE}${pageNumber}`,
+        );
+        setSearchResults(results.data.collection);
 
-        setPage({ currentPage: 1, previousPage: 0 })
+        setPage({ currentPage: 1, previousPage: 0 });
         setTotalData(results.data.collection.metadata.total_hits);
         reset();
         setYearStart(undefined);
         setYearEnd(undefined);
-
-    })
+    });
 
     const handlePageChange = (action: string) => {
         switch (action) {
@@ -76,20 +77,24 @@ const Search = () => {
                 setPage({ currentPage: 1, previousPage: page.currentPage });
                 break;
             case 'last':
-                setPage({ currentPage: Math.floor(totalData / ITEMS_PER_PAGE), previousPage: page.currentPage });
+                setPage({
+                    currentPage: Math.floor(totalData / ITEMS_PER_PAGE),
+                    previousPage: page.currentPage,
+                });
                 break;
             default:
                 break;
         }
-    }
+    };
 
     const debounceHandlePageChange = debounce(handlePageChange, 500);
 
     useEffect(() => {
         if (yearEnd && yearStart && yearEnd < yearStart) {
-            setYearEnd(yearStart)
+            setYearEnd(yearStart);
         }
     }, [yearEnd, yearStart]);
+
     useEffect(() => {
         const controller = new AbortController();
         const signal = controller.signal;
@@ -99,64 +104,71 @@ const Search = () => {
                 const splittedUrl = searchResults.links[0]?.href.split('&');
                 for (let i = 0; i < splittedUrl.length; i += 1) {
                     if (i === splittedUrl.length - 1) {
-                        createdUrl += `page=${page.currentPage.toString()}`
+                        createdUrl += `page=${page.currentPage.toString()}`;
                     } else {
                         createdUrl += `${splittedUrl[i]}&`;
                     }
                 }
-                const results = await axios.get(createdUrl, { signal })
-                setSearchResults(results.data.collection)
+                const results = await axios.get(createdUrl, { signal });
+                setSearchResults(results.data.collection);
                 return () => {
                     controller.abort();
                 };
             }
-        }
+        };
         getData();
-    }, [page.currentPage, searchResults.links])
+    }, [page.currentPage, searchResults.links]);
 
     return (
-        <div className="py-4 px-0 flex-col align-center justify-center mt-10 relative">
-            <form onSubmit={onSubmit} className="py-0 px-4 lg:px-48 lg:grid grid-cols-4 gap-4 h-20 gap-x-4 mb-20">
-                <div className="flex-col w-full mb-2">
-                    <input {...register("phrase")} placeholder="Enter Phrase" className={`${inputStyle} rounded w-full`} />
+        <div className='py-4 px-0 flex-col align-center justify-center mt-10 relative'>
+            <form
+                onSubmit={onSubmit}
+                className='py-0 px-4 lg:px-48 lg:grid grid-cols-4 gap-4 h-20 gap-x-4 mb-20'
+            >
+                <div className='flex-col w-full mb-2'>
+                    <input
+                        {...register('phrase')}
+                        placeholder='Enter Phrase'
+                        className={`${inputStyle} rounded w-full`}
+                    />
                     {errors?.phrase && <p className={inputErrorStyle}>{errors.phrase.message}</p>}
                 </div>
-                <YearPickerStyle className="flex-col mb-2 w-full">
+                <YearPickerStyle className='flex-col mb-2 w-full'>
                     <DatePicker
                         className={`${inputStyle} rounded`}
                         selected={yearStart}
                         onChange={(date: Date) => setYearStart(date)}
                         showYearPicker
-                        dateFormat="yyyy"
+                        dateFormat='yyyy'
                         placeholderText='Year Start'
                         onKeyDown={(e) => {
                             e.preventDefault();
                         }}
                     />
                 </YearPickerStyle>
-                <YearPickerStyle className="flex-col mb-2">
+                <YearPickerStyle className='flex-col mb-2'>
                     <DatePicker
                         className={`${inputStyle} rounded`}
                         selected={yearEnd}
                         onChange={(date: Date) => setYearEnd(date)}
                         showYearPicker
-                        dateFormat="yyyy"
+                        dateFormat='yyyy'
                         minDate={yearStart || null}
                         placeholderText='Year End'
                         onKeyDown={(e) => {
                             e.preventDefault();
                         }}
-
                     />
                 </YearPickerStyle>
-                <button type="submit" className="flex justify-center items-center w-full lg:w-auto h-12 border-2 border-white px-4 hover:border-white-100 rounded backdrop-blur-lg bg-transparent text-white">
+                <button
+                    type='submit'
+                    className='flex justify-center items-center w-full lg:w-auto h-12 border-2 border-white px-4 hover:border-white-100 rounded backdrop-blur-lg bg-transparent text-white'
+                >
                     Search
                 </button>
-
-
             </form>
-            {searchResults.items.length ?
-                <div className="grid grid-cols-1 mt-40 px-4 lg:px-0 lg:mt-0 lg:grid-cols-3 grid-flow-row gap-6 ">
+            {searchResults.items.length ? (
+                <div className='grid grid-cols-1 mt-40 px-4 lg:px-0 lg:mt-0 lg:grid-cols-3 grid-flow-row gap-6 '>
                     {searchResults.items.map((item) => {
                         const title = item.data[0].title;
                         // const date_created = item.data[0].date_created;
@@ -165,57 +177,93 @@ const Search = () => {
                         const nasa_id = item.data[0].nasa_id;
                         const photographer = item.data[0].photographer;
                         return (
-                            <div key={nasa_id} className="max-w-[100%] w-[100%] min-h-full hover:border-gray-300 rounded-md cursor-pointer hover:scale-[103%] ease-in duration-200">
+                            <div
+                                key={nasa_id}
+                                className='max-w-[100%] w-[100%] min-h-full hover:border-gray-300 rounded-md cursor-pointer hover:scale-[103%] ease-in duration-200'
+                            >
                                 <Link to={`/show/${nasa_id}`}>
                                     <Suspense fallback={<div>Loading...</div>}>
                                         <LazyImg thumbnail={thumbnail} />
                                     </Suspense>
-                                    <div className="text-white backdrop-blur-sm p-4">
-                                        <p>Title: {title.substring(0, 25)} {title.length > 24 && '...'}</p>
+                                    <div className='text-white backdrop-blur-sm p-4'>
+                                        <p>
+                                            Title: {title.substring(0, 25)}{' '}
+                                            {title.length > 24 && '...'}
+                                        </p>
                                         <p>Location: {location ? location : '/'}</p>
                                         <p>Photographer: {photographer ? photographer : '/'}</p>
                                         {/* <p>Date: {new Date(date_created).toLocaleDateString()}</p> */}
                                     </div>
                                 </Link>
                             </div>
-                        )
+                        );
                     })}
-
                 </div>
-                :
-                null
-            }
-            {
-                searchResults.items.length ?
-                    <div className="flex-col">
-                        <div className="mt-10 mb-20 flex justify-center">
-                            <button
-                                onClick={() => debounceHandlePageChange('first')}
-                                className="text-xl mr-5 font-bold cursor-pointer text-white"
-                            >
-                                {`<<`}
-                            </button>
-                            <button onClick={() => debounceHandlePageChange('prev')} className="font-bold text-xl mr-4 cursor-pointer text-white"> {` < `}</button>
-                            {page.currentPage > 1 && <div className="border w-6 rounded-md flex justify-center mr-4 cursor-pointer px-4 text-white" onClick={() => setPage({ currentPage: page.currentPage - 1, previousPage: page.currentPage })}>{page.currentPage - 1}</div>}
-                            <div className="border border-white-900 w-6 rounded-md flex justify-center px-4 text-black bg-white"> {page.currentPage} </div>
-                            {page.currentPage < Math.floor(totalData / ITEMS_PER_PAGE) && <div className="border w-6 rounded-md flex justify-center ml-4 cursor-pointer px-4 text-white"
-                                onClick={() => setPage({ currentPage: page.currentPage + 1, previousPage: page.currentPage })}>
-                                {page.currentPage + 1}
-                            </div>}
-                            <button onClick={() => debounceHandlePageChange('next')} className="font-bold text-xl ml-4 cursor-pointer text-white" > {` > `}</button>
+            ) : null}
+            {searchResults.items.length ? (
+                <div className='flex-col'>
+                    <div className='mt-10 mb-20 flex justify-center'>
+                        <button
+                            onClick={() => debounceHandlePageChange('first')}
+                            className='text-xl mr-5 font-bold cursor-pointer text-white'
+                        >
+                            {`<<`}
+                        </button>
+                        <button
+                            onClick={() => debounceHandlePageChange('prev')}
+                            className='font-bold text-xl mr-4 cursor-pointer text-white'
+                        >
+                            {' '}
+                            {` < `}
+                        </button>
+                        {page.currentPage > 1 && (
                             <div
-                                onClick={() => debounceHandlePageChange('last')}
-                                className="text-xl ml-5 font-bold cursor-pointer text-white">
-                                {`>>`}
+                                className='border w-6 rounded-md flex justify-center mr-4 cursor-pointer px-4 text-white'
+                                onClick={() =>
+                                    setPage({
+                                        currentPage: page.currentPage - 1,
+                                        previousPage: page.currentPage,
+                                    })
+                                }
+                            >
+                                {page.currentPage - 1}
                             </div>
+                        )}
+                        <div className='border border-white-900 w-6 rounded-md flex justify-center px-4 text-black bg-white'>
+                            {' '}
+                            {page.currentPage}{' '}
+                        </div>
+                        {page.currentPage < Math.floor(totalData / ITEMS_PER_PAGE) && (
+                            <div
+                                className='border w-6 rounded-md flex justify-center ml-4 cursor-pointer px-4 text-white'
+                                onClick={() =>
+                                    setPage({
+                                        currentPage: page.currentPage + 1,
+                                        previousPage: page.currentPage,
+                                    })
+                                }
+                            >
+                                {page.currentPage + 1}
+                            </div>
+                        )}
+                        <button
+                            onClick={() => debounceHandlePageChange('next')}
+                            className='font-bold text-xl ml-4 cursor-pointer text-white'
+                        >
+                            {' '}
+                            {` > `}
+                        </button>
+                        <div
+                            onClick={() => debounceHandlePageChange('last')}
+                            className='text-xl ml-5 font-bold cursor-pointer text-white'
+                        >
+                            {`>>`}
                         </div>
                     </div>
-                    :
-
-                    null
-            }
+                </div>
+            ) : null}
         </div>
-    )
-}
+    );
+};
 
-export default Search
+export default Search;

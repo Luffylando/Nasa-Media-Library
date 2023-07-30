@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 import bg from '../assets/3.jpg';
 
 export const HeaderStyle = styled.header`
@@ -21,7 +21,7 @@ export const FooterStyle = styled.footer`
 `;
 
 export const LayoutWrapper = styled.div`
-    display:flex;
+    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: start;
