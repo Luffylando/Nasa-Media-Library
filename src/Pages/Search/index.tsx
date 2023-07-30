@@ -8,7 +8,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { searchSchema } from "./validation";
 import { inputStyle, inputErrorStyle } from '../../tailwindCustomStyles';
 import { TSearchPageForm, TSearchResult } from '../../types';
-import { YearPickerStyle, NasaImagePlaceholder } from './style';
+import { YearPickerStyle } from './style';
 const LazyImg = lazy(() => import('../../components/LazyImg'));
 
 const Search = () => {
@@ -59,7 +59,6 @@ const Search = () => {
         setYearEnd(undefined);
 
     })
-    console.log({ searchResults })
 
     const handlePageChange = (action: string) => {
         switch (action) {
@@ -113,11 +112,11 @@ const Search = () => {
             }
         }
         getData();
-    }, [page.currentPage])
+    }, [page.currentPage, searchResults.links])
 
     return (
-        <div className="py-4 px-0 flex-col align-center justify-center">
-            <form onSubmit={onSubmit} className="py-0 px-4 lg:px-48 lg:grid grid-cols-4 gap-4 h-20 gap-x-4">
+        <div className="py-4 px-0 flex-col align-center justify-center mt-10 relative">
+            <form onSubmit={onSubmit} className="py-0 px-4 lg:px-48 lg:grid grid-cols-4 gap-4 h-20 gap-x-4 mb-20">
                 <div className="flex-col w-full mb-2">
                     <input {...register("phrase")} placeholder="Enter Phrase" className={`${inputStyle} rounded w-full`} />
                     {errors?.phrase && <p className={inputErrorStyle}>{errors.phrase.message}</p>}
@@ -150,10 +149,14 @@ const Search = () => {
 
                     />
                 </YearPickerStyle>
-                <button type="submit" className="w-full lg:w-auto h-8 border border-gray-400 px-4 hover:border-gray-600 rounded">search</button>
+                <button type="submit" className="flex justify-center items-center w-full lg:w-auto h-12 border-2 border-white px-4 hover:border-white-100 rounded backdrop-blur-lg bg-transparent text-white">
+                    Search
+                </button>
+
+
             </form>
             {searchResults.items.length ?
-                <div className="grid grid-cols-1 mt-28 px-4 lg:px-0 lg:mt-0 lg:grid-cols-3 grid-flow-row gap-6">
+                <div className="grid grid-cols-1 mt-40 px-4 lg:px-0 lg:mt-0 lg:grid-cols-3 grid-flow-row gap-6 ">
                     {searchResults.items.map((item) => {
                         const title = item.data[0].title;
                         // const date_created = item.data[0].date_created;
@@ -162,12 +165,12 @@ const Search = () => {
                         const nasa_id = item.data[0].nasa_id;
                         const photographer = item.data[0].photographer;
                         return (
-                            <div key={nasa_id} className="max-w-[100%] w-[100%] min-h-full border border-gray-200 hover:border-gray-300 mb-4 rounded-md cursor-pointer hover:scale-[103%] ease-in duration-200">
+                            <div key={nasa_id} className="max-w-[100%] w-[100%] min-h-full hover:border-gray-300 rounded-md cursor-pointer hover:scale-[103%] ease-in duration-200">
                                 <Link to={`/show/${nasa_id}`}>
                                     <Suspense fallback={<div>Loading...</div>}>
                                         <LazyImg thumbnail={thumbnail} />
                                     </Suspense>
-                                    <div className="p-4">
+                                    <div className="text-white backdrop-blur-sm p-4">
                                         <p>Title: {title.substring(0, 25)} {title.length > 24 && '...'}</p>
                                         <p>Location: {location ? location : '/'}</p>
                                         <p>Photographer: {photographer ? photographer : '/'}</p>
@@ -180,9 +183,7 @@ const Search = () => {
 
                 </div>
                 :
-                <div className="mt-40 flex justify-center align-center">
-                    <NasaImagePlaceholder />
-                </div>
+                null
             }
             {
                 searchResults.items.length ?
@@ -190,28 +191,30 @@ const Search = () => {
                         <div className="mt-10 mb-20 flex justify-center">
                             <button
                                 onClick={() => debounceHandlePageChange('first')}
-                                className="text-xl mr-5 font-bold cursor-pointer"
+                                className="text-xl mr-5 font-bold cursor-pointer text-white"
                             >
                                 {`<<`}
                             </button>
-                            <button onClick={() => debounceHandlePageChange('prev')} className="font-bold text-xl mr-4 cursor-pointer"> {` < `}</button>
-                            {page.currentPage > 1 && <div className="border w-6 rounded-md flex justify-center mr-4 cursor-pointer px-4" onClick={() => setPage({ currentPage: page.currentPage - 1, previousPage: page.currentPage })}>{page.currentPage - 1}</div>}
-                            <div className="border border-gray-900 w-6 rounded-md flex justify-center px-4"> {page.currentPage} </div>
-                            {page.currentPage < Math.floor(totalData / ITEMS_PER_PAGE) && <div className="border w-6 rounded-md flex justify-center ml-4 cursor-pointer px-4"
+                            <button onClick={() => debounceHandlePageChange('prev')} className="font-bold text-xl mr-4 cursor-pointer text-white"> {` < `}</button>
+                            {page.currentPage > 1 && <div className="border w-6 rounded-md flex justify-center mr-4 cursor-pointer px-4 text-white" onClick={() => setPage({ currentPage: page.currentPage - 1, previousPage: page.currentPage })}>{page.currentPage - 1}</div>}
+                            <div className="border border-white-900 w-6 rounded-md flex justify-center px-4 text-black bg-white"> {page.currentPage} </div>
+                            {page.currentPage < Math.floor(totalData / ITEMS_PER_PAGE) && <div className="border w-6 rounded-md flex justify-center ml-4 cursor-pointer px-4 text-white"
                                 onClick={() => setPage({ currentPage: page.currentPage + 1, previousPage: page.currentPage })}>
                                 {page.currentPage + 1}
                             </div>}
-                            <button onClick={() => debounceHandlePageChange('next')} className="font-bold text-xl ml-4 cursor-pointer" > {` > `}</button>
+                            <button onClick={() => debounceHandlePageChange('next')} className="font-bold text-xl ml-4 cursor-pointer text-white" > {` > `}</button>
                             <div
                                 onClick={() => debounceHandlePageChange('last')}
-                                className="text-xl ml-5 font-bold cursor-pointer">
+                                className="text-xl ml-5 font-bold cursor-pointer text-white">
                                 {`>>`}
                             </div>
                         </div>
                     </div>
-                    : null
+                    :
+
+                    null
             }
-        </div >
+        </div>
     )
 }
 

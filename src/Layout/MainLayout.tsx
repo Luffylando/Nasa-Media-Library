@@ -1,5 +1,9 @@
 import { Link } from 'react-router-dom';
-import { HeaderStyle, FooterStyle, LayoutWrapper, ChildrenWrapper, LinkStyle } from "./style";
+import { HeaderStyle, LayoutWrapper, ChildrenWrapper, LinkStyle } from "./style";
+import nasa from '../assets/nasa.png';
+import { SVGWrapper } from '../Pages/Search/style';
+import spaceship from '../assets/svgs/spaceship-svgrepo-com.svg'
+import { SVG } from '../Pages/Search/style';
 
 type TChildren = {
     children: React.ReactNode
@@ -7,16 +11,20 @@ type TChildren = {
 
 const MainLayout = ({ children }: TChildren) => {
     return (
-        <LayoutWrapper>
+        <LayoutWrapper className="font-mono" >
+            <SVGWrapper>
+                <div className="circle">
+                    <SVG src={spaceship} width="150px" height="150px" />
+                </div>
+            </SVGWrapper>
             <HeaderStyle>
                 <LinkStyle>
-                    <Link to="/">Home</Link>
+                    <Link to="/"><img src={nasa} className="p-4 h-40" /></Link>
                 </LinkStyle>
             </HeaderStyle>
             <ChildrenWrapper>
                 {children}
             </ChildrenWrapper>
-            <FooterStyle>FOOTER</FooterStyle>
         </LayoutWrapper>
     )
 }

@@ -1,3 +1,3 @@
-export const inputStyle = `pl-2 border border-gray-400 hover:border-gray-600 h-8 focus:border-slate-600 focus:border-1 !outline-none`
-export const inputErrorStyle = `text-red-700 text-xs`;
+export const inputStyle = `pl-2 border-2 border-gray-400 hover:border-gray-100 h-12 focus:border-white focus:border-2 !outline-none backdrop-blur-lg bg-transparent text-slate-50 placeholder:text-gray-400`
+export const inputErrorStyle = `text-red-400 text-sm`;
 export const inputLabel = `text-xs mb-1 w-80 flex`;
