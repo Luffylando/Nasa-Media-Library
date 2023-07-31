@@ -145,11 +145,11 @@ const Search = () => {
                 setYearStart={setYearStart}
                 setYearEnd={setYearEnd}
             />
-            {errorMsg && <p className='text-2xl font-bold text-white text-center'>{errorMsg}</p>}
+            {errorMsg && <p className='text-2xl font-bold text-white text-center mt-28 px-4 lg:mt-0'>{errorMsg}</p>}
             {searchResults.items.length ? (
                 <div
                     data-cy='search-page-results'
-                    className='grid grid-cols-1 mt-40 px-4 lg:px-0 lg:mt-0 lg:grid-cols-3 grid-flow-row gap-6 '
+                    className='grid grid-cols-1 mt-40 px-4 xl:px-0 lg:mt-0 lg:grid-cols-3 grid-flow-row gap-6'
                 >
                     {searchResults.items.map((item) => {
                         const title = item.data[0].title;
