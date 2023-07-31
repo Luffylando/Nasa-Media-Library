@@ -123,7 +123,9 @@ const Search = () => {
                         createdUrl += `${splittedUrl[i]}&`;
                     }
                 }
-                const results = await axios.get(createdUrl, { signal });
+                const regex = /http:/g;
+                const updatedString = createdUrl.replace(regex, "https:");
+                const results = await axios.get(updatedString, { signal });
                 setSearchResults(results.data.collection);
                 return () => {
                     controller.abort();
