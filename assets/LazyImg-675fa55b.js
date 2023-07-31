@@ -1,0 +1,1 @@
+import{j as s}from"./index-93b1fa56.js";const m=t=>{const{thumbnail:e}=t;return s.jsx("img",{className:"h-48 rounded-t-md aspect-square mx-auto flex flex-col justify-center items-center object-cover w-96",src:e,alt:"item thumbnail"})};export{m as default};
