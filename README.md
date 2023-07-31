@@ -1,27 +1,21 @@
-# React + TypeScript + Vite
+# Nasa Library Front End Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Instruction for starting project:
 
-Currently, two official plugins are available:
+1. Download/clone repo to your local machine.
+2. Install all dependencies by running: `npm install`
+3. Create .env file and add one variable: VITE_API_URL=https://images-api.nasa.gov
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Im providing here this information since it's open API, else, I would send it in email as a secret.
 
-## Expanding the ESLint configuration
+4. Now you can start application by running: `npm run dev`
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+There you can browse trough nasa library and see some specific results of the search.
 
-- Configure the top-level `parserOptions` property like this:
+5. You can check basic tests written in cypress by running: `npm run cypress`
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
+From the console just click on the tests.
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Additional info: for cypress make sure your running port of application is the one defined in cypress.config.ts (baseUrl property).
+
+
