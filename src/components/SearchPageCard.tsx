@@ -8,7 +8,7 @@ const SearchPageCard = ({ nasa_id, thumbnail, title, location, photographer }: T
         <div
             data-cy='search-page-card'
             key={nasa_id}
-            className='max-w-[100%] w-[100%] min-h-full hover:border-gray-300 rounded-md cursor-pointer hover:scale-[103%] ease-in duration-200'
+            className='max-w-[100%] w-[100%] min-h-[300px] hover:border-gray-300 rounded-md cursor-pointer hover:scale-[103%] ease-in duration-200'
         >
             <Link to={`/show/${nasa_id}`}>
                 <Suspense fallback={<div>Loading...</div>}>
