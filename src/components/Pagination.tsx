@@ -12,12 +12,14 @@ const Pagination = ({
             <div className='flex-col'>
                 <div className='mt-10 mb-20 flex justify-center'>
                     <button
+                        data-cy='pagination-first'
                         onClick={() => handlePageChange('first')}
                         className='text-xl mr-5 font-bold cursor-pointer text-white'
                     >
                         {`<<`}
                     </button>
                     <button
+                        data-cy='pagination-previous'
                         onClick={() => handlePageChange('prev')}
                         className='font-bold text-xl mr-4 cursor-pointer text-white'
                     >
@@ -26,6 +28,7 @@ const Pagination = ({
                     </button>
                     {page.currentPage > 1 && (
                         <div
+                            data-cy='pagination-beforeCurrent'
                             className='border w-6 rounded-md flex justify-center mr-4 cursor-pointer px-4 text-white'
                             onClick={() =>
                                 handleSetPage({
@@ -37,12 +40,16 @@ const Pagination = ({
                             {page.currentPage - 1}
                         </div>
                     )}
-                    <div className='border border-white-900 w-6 rounded-md flex justify-center px-4 text-black bg-white'>
+                    <div
+                        data-cy='pagination-current'
+                        className='border border-white-900 w-6 rounded-md flex justify-center px-4 text-black bg-white'
+                    >
                         {' '}
                         {page.currentPage}{' '}
                     </div>
                     {page.currentPage < Math.floor(totalData / itemsPerPage) && (
                         <div
+                            data-cy='pagination-afterCurrent'
                             className='border w-6 rounded-md flex justify-center ml-4 cursor-pointer px-4 text-white'
                             onClick={() =>
                                 handleSetPage({
@@ -55,6 +62,7 @@ const Pagination = ({
                         </div>
                     )}
                     <button
+                        data-cy='pagination-next'
                         onClick={() => handlePageChange('next')}
                         className='font-bold text-xl ml-4 cursor-pointer text-white'
                     >
@@ -62,6 +70,7 @@ const Pagination = ({
                         {` > `}
                     </button>
                     <div
+                        data-cy='pagination-last'
                         onClick={() => handlePageChange('last')}
                         className='text-xl ml-5 font-bold cursor-pointer text-white'
                     >

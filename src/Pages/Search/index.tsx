@@ -1,15 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-import DatePicker from 'react-datepicker';
 import debounce from 'lodash.debounce';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { searchSchema } from './validation';
-import { inputStyle, inputErrorStyle } from '../../tailwindCustomStyles';
 import { TSearchPageForm, TSearchResult } from '../../types';
-import { YearPickerStyle } from './style';
 import Pagination from '../../components/Pagination';
 import SearchPageCard from '../../components/SearchPageCard';
+import SearchForm from '../../components/SearchForm';
 
 const Search = () => {
     const [totalData, setTotalData] = useState<number>(0);
@@ -137,64 +135,22 @@ const Search = () => {
 
     return (
         <div className='py-4 px-0 flex flex-col items-center justify-center mt-10 relative'>
-            <form
+            <SearchForm
+                register={register}
+                name='phrase'
                 onSubmit={onSubmit}
-                className='py-0 px-4 lg:px-48 lg:grid grid-cols-4 gap-4 h-20 gap-x-4 mb-20 min-h-auto w-full '
-            >
-                <div className='flex flex-col w-full mb-2 items-center'>
-                    <input
-                        {...register('phrase')}
-                        placeholder='Enter Phrase'
-                        className={`${inputStyle} rounded w-full max-w-[400px]`}
-                    />
-                    {errors?.phrase && <p className={inputErrorStyle}>{errors.phrase.message}</p>}
-                </div>
-                <div className='flex flex-col w-full mb-2 items-center'>
-                    <YearPickerStyle className='flex flex-col mb-2 w-full max-w-[400px] justify-center items-center'>
-                        <DatePicker
-                            className={`${inputStyle} rounded`}
-                            selected={yearStart}
-                            onChange={(date: Date) => setYearStart(date)}
-                            showYearPicker
-                            dateFormat='yyyy'
-                            placeholderText='Year Start'
-                            onKeyDown={(e) => {
-                                e.preventDefault();
-                            }}
-                        />
-                    </YearPickerStyle>
-                </div>
-                <div className='flex flex-col w-full mb-2 items-center'>
-                    <YearPickerStyle className='flex-col mb-2 w-full max-w-[400px]'>
-                        <DatePicker
-                            className={`${inputStyle} rounded`}
-                            selected={yearEnd}
-                            onChange={(date: Date) => setYearEnd(date)}
-                            showYearPicker
-                            dateFormat='yyyy'
-                            minDate={yearStart || null}
-                            placeholderText='Year End'
-                            onKeyDown={(e) => {
-                                e.preventDefault();
-                            }}
-                        />
-                    </YearPickerStyle>
-                </div>
-                <div className='flex flex-col w-full mb-2 items-center lg:items-stretch '>
-                    <button
-                        type='submit'
-                        className='flex justify-center items-center w-full lg:w-auto h-12 border-2
-                     border-white px-4 hover:border-white-100 rounded
-                      backdrop-blur-lg bg-transparent text-white max-w-[400px]'
-                    >
-                        Search
-                    </button>
-                </div>
-            </form>
-
+                yearStart={yearStart}
+                yearEnd={yearEnd}
+                errors={errors}
+                setYearStart={setYearStart}
+                setYearEnd={setYearEnd}
+            />
             {errorMsg && <p className='text-2xl font-bold text-white text-center'>{errorMsg}</p>}
             {searchResults.items.length ? (
-                <div className='grid grid-cols-1 mt-40 px-4 lg:px-0 lg:mt-0 lg:grid-cols-3 grid-flow-row gap-6 '>
+                <div
+                    data-cy='search-page-results'
+                    className='grid grid-cols-1 mt-40 px-4 lg:px-0 lg:mt-0 lg:grid-cols-3 grid-flow-row gap-6 '
+                >
                     {searchResults.items.map((item) => {
                         const title = item.data[0].title;
                         const location = item.data[0].location;

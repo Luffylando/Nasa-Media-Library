@@ -82,3 +82,21 @@ export type SVGProps = {
     width?: string;
     height?: string;
 };
+
+type TErrors = {
+    phrase: {
+        message: string;
+    };
+    ref: () => void;
+    type: string | number;
+};
+export type TSearchForm = {
+    register: any; // TODO
+    onSubmit: () => void;
+    name: string;
+    yearStart: Date | undefined;
+    yearEnd: Date | undefined;
+    setYearStart: (date: Date | undefined) => void;
+    setYearEnd: (date: Date | undefined) => void;
+    errors: TErrors | any;
+};
