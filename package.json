@@ -12,7 +12,7 @@
     "preview": "vite preview",
     "cypress": "npx cypress open",
     "predeploy" : "npm run build",
-    "deploy" : "gh-pages -d build"  
+    "deploy" : "gh-pages -d dist"  
   },
   "dependencies": {
     "@hookform/resolvers": "^3.1.1",
